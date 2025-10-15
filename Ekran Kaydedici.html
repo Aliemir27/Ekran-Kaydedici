@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <!-- Sayfa karakter kodlaması ve mobil uyumluluk ayarları -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tarayıcı sekmesinde görünecek başlık -->
+  <title>Ekran Kaydedici</title>
+
+  <!-- Tailwind CSS'i dahil eder. Hazır utility sınıflarını kullanmak için -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-800 via-slate-800 to-gray-900 text-white min-h-screen flex items-center justify-center p-4">
+<!-- Sayfa ortasında merkezi kart -->
+<div class="text-center space-y-4 bg-gray-950 bg-opacity-60 backdrop-blur-md p-6 rounded-2xl shadow-2xl">
+  <!-- Ana başlık -->
+  <h1 class="text-3xl font-extrabold text-teal-400">Ekran Kaydedici</h1>
+
+  <!-- Butonlar grubu -->
+  <div>
+    <!-- Kayda başla butonu -->
+    <button id="startBtn" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-xl transition">Kayda Başla</button>
+
+    <!-- Duraklat butonu (ilk başta gizli) -->
+    <button id="pauseBtn" class="hidden bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-xl ml-2 transition">Duraklat</button>
+
+    <!-- Devam et butonu (ilk başta gizli) -->
+    <button id="resumeBtn" class="hidden bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-xl ml-2 transition">Devam Et</button>
+
+    <!-- Kaydı durdur butonu (ilk başta gizli) -->
+    <button id="stopBtn" class="hidden bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-xl ml-2 transition">Kaydı Bitir</button>
+
+    <!-- Anlık ekran görüntüsü al butonu -->
+    <button id="screenshotBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl ml-2 transition">Ekran Görüntüsü</button>
+  </div>
+
+  <!-- Küçük yazıyla sayaç gösterimi -->
+  <div id="timer" class="text-sm text-gray-300"></div>
+
+  <!-- Kaydı indir linkleri (webm ve mp4 gibi sunulur) -->
+  <a id="downloadLink" class="hidden text-teal-400 underline block" download="kayit.webm">WebM Kaydını İndir</a>
+  <a id="downloadMP4Link" class="hidden text-rose-400 underline block" download="kayit.mp4">MP4 Olarak Kaydet (.webm formatında)</a>
+
+  <!-- Ekran görüntüsü indir linki -->
+  <a id="screenshotLink" class="hidden text-blue-400 underline block mt-2" download="ekran-goruntusu.jpeg">Görüntüyü İndir</a>
+
+  <!-- JavaScript kısmı -->
+  <script>
+    // HTML öğelerini seçiyoruz
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const resumeBtn = document.getElementById('resumeBtn');
+    const screenshotBtn = document.getElementById('screenshotBtn');
+    const downloadLink = document.getElementById('downloadLink');
+    const downloadMP4Link = document.getElementById('downloadMP4Link');
+    const screenshotLink = document.getElementById('screenshotLink');
+    const timerDisplay = document.getElementById('timer');
+
+    // Küresel değişkenler
+    let mediaRecorder, recordedChunks = [], timerInterval, seconds = 0, stream;
+
+    // Saniyeyi "00:00" formatına dönüştürür
+    function formatTime(s) {
+      const mins = String(Math.floor(s / 60)).padStart(2, '0');
+      const secs = String(s % 60).padStart(2, '0');
+      return `${mins}:${secs}`;
+    }
+
+    // Sayaç güncelleme fonksiyonu
+    function updateTimer() {
+      seconds++;
+      timerDisplay.textContent = `Kayıt: ${formatTime(seconds)}`;
+    }
+
+    // Kayda başla butonuna tıklanırsa
+    startBtn.onclick = async () => {
+      stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      recordedChunks = [];
+      seconds = 0;
+      timerDisplay.textContent = 'Kayıt: 00:00';
+      timerInterval = setInterval(updateTimer, 1000);
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) recordedChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        clearInterval(timerInterval);
+        timerDisplay.textContent = '';
+
+        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+
+        downloadLink.href = url;
+        downloadLink.classList.remove('hidden');
+
+        downloadMP4Link.href = url;
+        downloadMP4Link.classList.remove('hidden');
+      };
+
+      mediaRecorder.start();
+      startBtn.classList.add('hidden');
+      stopBtn.classList.remove('hidden');
+      pauseBtn.classList.remove('hidden');
+    };
+
+    // Kaydı durdur
+    stopBtn.onclick = () => {
+      mediaRecorder.stop();
+      stopBtn.classList.add('hidden');
+      pauseBtn.classList.add('hidden');
+      resumeBtn.classList.add('hidden');
+      startBtn.classList.remove('hidden');
+    };
+
+    // Kaydı duraklat
+    pauseBtn.onclick = () => {
+      mediaRecorder.pause();
+      clearInterval(timerInterval);
+      pauseBtn.classList.add('hidden');
+      resumeBtn.classList.remove('hidden');
+    };
+
+    // Kayda devam et
+    resumeBtn.onclick = () => {
+      mediaRecorder.resume();
+      timerInterval = setInterval(updateTimer, 1000);
+      resumeBtn.classList.add('hidden');
+      pauseBtn.classList.remove('hidden');
+    };
+
+    // Ekran görüntüsü al
+    screenshotBtn.onclick = async () => {
+      const track = stream.getVideoTracks()[0];
+      const imageCapture = new ImageCapture(track);
+      const bitmap = await imageCapture.grabFrame();
+
+      const canvas = document.createElement('canvas');
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      canvas.getContext('2d').drawImage(bitmap, 0, 0);
+
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        screenshotLink.href = url;
+        screenshotLink.classList.remove('hidden');
+      }, 'image/jpeg');
+    };
+  </script>
+</div>
+</body>
+</html>
