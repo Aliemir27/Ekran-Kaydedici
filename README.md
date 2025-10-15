@@ -23,26 +23,25 @@
 
 Bu proje MIT lisansı ile lisanslanmıştır.
 
-MIT Lisansı
+MIT License
 
-Telif hakkı (c) 2025 Aliemir27
+Copyright (c) 2025 Aliemir27
 
-Bir kopyasını edinen herkese, bu belgeyle ücretsiz olarak izin verilmiştir.
-Bu yazılımın ve ilişkili dokümantasyon dosyalarının ("Yazılım"),
-Yazılımda, sınırlama olmaksızın, haklar dahil olmak üzere, herhangi bir kısıtlama olmaksızın
-kullanmak, kopyalamak, değiştirmek, birleştirmek, yayınlamak, dağıtmak, alt lisanslamak ve/veya satmak
-Yazılımın kopyalarını ve Yazılımın kendilerine ait olduğu kişilere izin vermek için
-Bunu yapmak için aşağıdaki koşullara tabi olarak sağlanmıştır:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Yukarıdaki telif hakkı bildirimi ve bu izin bildirimi tüm
-Yazılımın kopyaları veya önemli bölümleri.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-YAZILIM, HERHANGİ BİR TÜRDE AÇIK VEYA GARANTİ OLMADAN "OLDUĞU GİBİ" SAĞLANMAKTADIR
-TİCARİ ELVERİŞLİLİK GARANTİLERİ DAHİL ANCAK BUNLARLA SINIRLI OLMAMAK ÜZERE ZIMNİ OLARAK,
-BELİRLİ BİR AMACA UYGUNLUK VE İHLAL ETMEME. HİÇBİR DURUMDA
-YAZARLAR VEYA TELİF HAKKI SAHİPLERİ HERHANGİ BİR TALEP, ZARAR VEYA DİĞER SORUMLULUĞU ALTINDADIR
-SÖZLEŞME, HAKSIZ FİİL VEYA BAŞKA BİR ŞEKİLDE ORTAYA ÇIKAN SORUMLULUK,
-YAZILIM VEYA YAZILIMIN KULLANIMI VEYA DİĞER İŞLEMLERLE İLGİLİ OLARAK VEYA BUNLARLA İLGİLİ OLARAK
-YAZILIM.
-
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
